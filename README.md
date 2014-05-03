@@ -32,13 +32,11 @@ function Delayed(){function r(e,r,s,o){if(typeof n[o]!="undefined"){i(e,s,r)}els
 </script>
 
 <script>
+    delayed = new Delayed();
+
     delayed.loadScript(function(){
         console.log('loads after jquery');
     },null,null, 'jQuery');
-</script>
-
-<script>
-    delayed = new Delayed();
 </script>
 </head>
 <body>
