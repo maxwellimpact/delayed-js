@@ -53,7 +53,7 @@ function Delayed(){
 		loadedScripts[name] = true;
 		
 		// fire the callback
-		cb();
+		if(typeof cb == 'function') cb();
 
 		// check for waiting dependants
 		if(typeof delayedScripts[name] == 'object') {
