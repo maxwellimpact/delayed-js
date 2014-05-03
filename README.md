@@ -1,13 +1,24 @@
 About
 ==========
 
-Delayed JS is a light weight solution built to delay the load of JavaScript files and scripts through dynamic loading and dependency tracking without the need for a large library to load externally. It helps prevent render blocking of pages, which makes pages appear to load faster, and appeases googles page speed recomendations.
+Delayed JS is a light weight solution built to delay the load of JavaScript files and scripts through dynamic loading and dependency tracking without the need for a large library to load externally. It helps prevent render blocking of pages, which makes pages appear to load faster, and appeases googles page speed recommendations.
 
 Using delayed js
 ==========
 The prefered method for using delayed js is to include the minified version of the code directly in ```<head>``` by copying the contents of the file and pasting it within ```<script>``` tags. The non minified version is intended for development.
 
-## example usage
+## basic usage
+
+```js
+delayed.loadScript(src, name, callback, dependsOn);
+```
+
+* src - external js file or local function - required
+* name - used for tracking and dependancy checks - optional
+* callback - attached to the onload of the script from src - optional
+* dependsOn - used to tell it to hold the script until the dependancy loads - optional
+
+## full example
 
 ```html
 <!DOCTYPE html>
