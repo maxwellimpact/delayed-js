@@ -10,7 +10,7 @@ The prefered method for using delayed js is to include the minified version of t
 ## basic usage
 
 ```js
-delayed.loadScript(src, name, callback, dependsOn);
+delayed.script(src, name, callback, dependsOn);
 ```
 
 * src - external js file or local function - required
@@ -28,11 +28,11 @@ delayed.loadScript(src, name, callback, dependsOn);
 <title>Delayed JS</title>
     
 <script>
-function D(){function r(e,r,s,o){if(typeof n[o]!=u){i(e,s,r)}else{if(typeof t[o]==u)t[o]=[];t[o].push({src:e,name:r,cb:s})}}function i(e,t,n){if(typeof e==f){e()}else{var r=d.createElement("script");r.async=true;r.onload=function(){s(t,n)};r.src=e;var i=d.getElementsByTagName("body")[0];i.appendChild(r)}}function s(e,r){n[r]=true;if(typeof e==f)e();if(typeof t[r]=="object"){for(var s=0;s<t[r].length;s++){i(t[r][s].src,t[r][s].cb,t[r][s].name)}delete t[r]}}var e=this,t=[],n=[],d=document,f="function",u="undefined";this.loadScript=function(e,t,n,s){if(s){r(e,t,n,s)}else{i(e,n,t)}}}delayed=new D();
+function D(){function r(e,r,s,o){if(typeof n[o]!=u){i(e,s,r)}else{if(typeof t[o]==u)t[o]=[];t[o].push({src:e,name:r,cb:s})}}function i(e,t,n){if(typeof e==f){e()}else{var r=d.createElement("script");r.async=true;r.onload=function(){s(t,n)};r.src=e;var i=d.getElementsByTagName("body")[0];i.appendChild(r)}}function s(e,r){n[r]=true;if(typeof e==f)e();if(typeof t[r]=="object"){for(var s=0;s<t[r].length;s++){i(t[r][s].src,t[r][s].cb,t[r][s].name)}delete t[r]}}var e=this,t=[],n=[],d=document,f="function",u="undefined";this.script=function(e,t,n,s){if(s){r(e,t,n,s)}else{i(e,n,t)}}}delayed=new D();
 </script>
 
 <script>
-    delayed.loadScript(function(){
+    delayed.script(function(){
         console.log('loads after jquery');
     },null,null,'jQuery');
 </script>
@@ -42,7 +42,7 @@ function D(){function r(e,r,s,o){if(typeof n[o]!=u){i(e,s,r)}else{if(typeof t[o]
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
     
     <script>
-        delayed.loadScript('//code.jquery.com/jquery-1.11.0.min.js', 'jQuery', function(){
+        delayed.script('//code.jquery.com/jquery-1.11.0.min.js', 'jQuery', function(){
             console.log('jquery loaded');
         });
     </script>

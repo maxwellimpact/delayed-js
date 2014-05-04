@@ -10,7 +10,7 @@ function Delayed(){
 	var loadedScripts = new Array();
 	
 	// the main public function
-	this.loadScript = function(src, name, cb, dep){
+	this.script = function(src, name, cb, dep){
 		if(dep) {
 			addDelayedScript(src, name, cb, dep);
 		} else {
