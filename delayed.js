@@ -1,13 +1,10 @@
 function Delayed(){
 	
-	var self = this;
-	//this.delayedCSS = new Array();
-	
-	// holds scripts in waiting
-	var delayedScripts = new Array();
-	
-	// a record of whats already ran
-	var loadedScripts = new Array();
+	var delayedScripts = [],	// queue of scripts waiting on dependancy
+		loadedScripts = [],		// history of named scripts loaded
+		func = "function",		// the following added for better minification
+		undef = "undefined",	
+		doc = document;
 	
 	// the main public function
 	this.script = function(src, name, cb, dep){
@@ -21,28 +18,31 @@ function Delayed(){
 	// adds script to wait if it has dep, 
 	// but fires if its already loaded
 	function addDelayedScript(src, name, cb, dep){
-		if(typeof loadedScripts[dep] != 'undefined') {
+		if(typeof loadedScripts[dep] != undef) {
 			_loadScript(src, cb, name);
 		} else {
-			if(typeof delayedScripts[dep] == 'undefined')
-				delayedScripts[dep] = new Array();
+			if(typeof delayedScripts[dep] == undef)
+				delayedScripts[dep] = [];
 				
 			delayedScripts[dep].push({src: src, name: name, cb: cb});
-		}				
+		}
 	}
 	
 	// dynamically loads the script
 	function _loadScript(src,cb,name){
-		if(typeof src == 'function'){
+		if(typeof src == func){
 			src();
 		} else {
-			var sc = document.createElement('script');
+			var sc = doc.createElement('script');
 			//sc.type = 'text/javascript';
 			sc.async = true;
 			sc.onload = function(){scriptLoaded(cb,name)};
+			sc.onreadystatechange = function(){
+				if(sc.readyState=="complete" || sc.readyState=="loaded") sc.onload();
+			}
 			sc.src = src;
 			
-			var bo = document.getElementsByTagName('body')[0];
+			var bo = doc.getElementsByTagName('body')[0];
 			bo.appendChild(sc);
 		}
 	}
@@ -53,7 +53,7 @@ function Delayed(){
 		loadedScripts[name] = true;
 		
 		// fire the callback
-		if(typeof cb == 'function') cb();
+		if(typeof cb == func) cb();
 
 		// check for waiting dependants
 		if(typeof delayedScripts[name] == 'object') {

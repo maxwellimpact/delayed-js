@@ -18,6 +18,13 @@ delayed.script(src, name, callback, dependsOn);
 * callback - attached to the onload of the script from src - optional
 * dependsOn - used to tell it to hold the script until the dependancy loads - optional
 
+## tested on
+
+* Firefox (latest)
+* Chrome (latest)
+* Safari (latest)
+* IE (7,8,9,10,11)
+
 ## full example
 
 ```html
