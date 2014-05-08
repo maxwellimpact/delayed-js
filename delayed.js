@@ -37,9 +37,14 @@ function Delayed(){
 			//sc.type = 'text/javascript';
 			sc.async = true;
 			sc.onload = function(){scriptLoaded(cb,name)};
-			sc.onreadystatechange = function(){
-				if(sc.readyState=="complete" || sc.readyState=="loaded") sc.onload();
+			
+			// fixes an ie 9/10 bug by having both event types
+			if(!sc.addEventListener) {
+				sc.onreadystatechange = function(){
+					if(sc.readyState=="complete" || sc.readyState=="loaded") sc.onload();
+				}
 			}
+
 			sc.src = src;
 			
 			var bo = doc.getElementsByTagName('body')[0];
