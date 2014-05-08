@@ -38,11 +38,10 @@ function Delayed(){
 			sc.async = true;
 			sc.onload = function(){scriptLoaded(cb,name)};
 			
-			// fixes an ie 9/10 bug by having both event types
-			if(!sc.addEventListener) {
-				sc.onreadystatechange = function(){
-					if(sc.readyState=="complete" || sc.readyState=="loaded") sc.onload();
-				}
+			// prevent firing load event twice on ie 9/10
+			// http://msdn.microsoft.com/en-us/library/ie/hh180173(v=vs.85).aspx
+			if(!sc.addEventListener && sc.readyState) {
+				sc.onreadystatechange = sc.onload;
 			}
 
 			sc.src = src;
