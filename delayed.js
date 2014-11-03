@@ -1,32 +1,21 @@
-function Delayed(){
+function D(){
 	
 	var delayedScripts = [],	// queue of scripts waiting on dependancy
 		loadedScripts = [],		// history of named scripts loaded
 		func = "function",		// the following added for better minification
 		undef = "undefined",	
 		doc = document;
-	
-	// the main public function
-	this.script = function(src, name, cb, dep){
-		if(dep) {
-			addDelayedScript(src, name, cb, dep);
-		} else {
-			_loadScript(src, cb, name);
-		}
-	};
 
 	// adds script to wait if it has dep, 
 	// but fires if its already loaded
-	function addDelayedScript(src, name, cb, dep){
-		if(typeof loadedScripts[dep] != undef) {
+	this.script = function(src, name, cb, dep){
+		if(!dep || loadedScripts[dep]) {
 			_loadScript(src, cb, name);
 		} else {
-			if(typeof delayedScripts[dep] == undef)
-				delayedScripts[dep] = [];
-				
-			delayedScripts[dep].push({src: src, name: name, cb: cb});
+			delayedScripts[dep] = [];	
+			delayedScripts[dep].push([src, name, cb]);
 		}
-	}
+	};
 	
 	// dynamically loads the script
 	function _loadScript(src,cb,name){
@@ -34,7 +23,7 @@ function Delayed(){
 			src();
 		} else {
 			var sc = doc.createElement('script');
-			//sc.type = 'text/javascript';
+
 			sc.async = true;
 			sc.onload = function(){scriptLoaded(cb,name)};
 			
@@ -59,18 +48,18 @@ function Delayed(){
 		// fire the callback
 		if(typeof cb == func) cb();
 
-		// check for waiting dependants
-		if(typeof delayedScripts[name] == 'object') {
-			// load each dependant
-			for(var x=0; x<delayedScripts[name].length; x++){
-				_loadScript(
-					delayedScripts[name][x].src,
-					delayedScripts[name][x].cb,
-					delayedScripts[name][x].name
-				);
-			}
-			// remove its waiting dependants from waiting
-			delete delayedScripts[name];
+		if(!delayedScripts[name]) delayedScripts[name]=[];
+
+		// load each dependant
+		for(var x=0; x<delayedScripts[name].length; x++){
+			_loadScript(
+				delayedScripts[name][x][0], //src
+				delayedScripts[name][x][1], //name
+				delayedScripts[name][x][2]  //cb
+			);
 		}
+		
+		// remove its waiting dependants from waiting
+		delete delayedScripts[name];
 	}
-}
+}delayed=new D;
